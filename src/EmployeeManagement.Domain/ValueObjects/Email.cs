@@ -29,6 +29,14 @@ public partial class Email
 
     #region Overrides
 
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+            return false;
+
+        var otherEmail = (Email)obj;
+        return ToString() == otherEmail.ToString();
+    }
     public override int GetHashCode() => Value.ToLower().GetHashCode();
     public override string ToString() => Value;
 
