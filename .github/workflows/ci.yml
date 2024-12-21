@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        dotnet-version: [9.0]  # Specify the .NET version
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+
+    - name: Restore dependencies
+      run: dotnet restore EmployeeManagementSystem.sln
+
+    - name: Build project
+      run: dotnet build EmployeeManagementSystem.sln --no-restore
+
+    - name: Run tests
+      run: dotnet test EmployeeManagementSystem.sln --no-build --verbosity normal
+
